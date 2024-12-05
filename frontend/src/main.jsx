@@ -1,13 +1,28 @@
 import { StrictMode } from "react";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+  Route,
+} from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import "./assets/styles/index.css";
 import "./assets/styles/bootstrap.custom.css";
 
 /* import "bootstrap/dist/css/bootstrap.min.css"; */
 import App from "./App.jsx";
+import HomeScreen from "./pages/HomeScreen.jsx";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<App />}>
+      <Route index path="/" element={<HomeScreen />} />
+    </Route>
+  )
+);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </StrictMode>
 );

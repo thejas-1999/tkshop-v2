@@ -11,7 +11,7 @@ const Header = () => {
             <img
               src={logo}
               alt="logo"
-              style={{ height: "30px", width: "30px" }}
+              style={{ height: "50px" }}
               className="me-2"
             />
             TKShop
