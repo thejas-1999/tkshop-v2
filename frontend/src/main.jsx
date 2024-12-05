@@ -4,6 +4,7 @@ import {
   createRoutesFromElements,
   RouterProvider,
   Route,
+  BrowserRouter,
 } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import "./assets/styles/index.css";
@@ -16,7 +17,7 @@ import HomeScreen from "./pages/HomeScreen.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route index path="/" element={<HomeScreen />} />
+      <Route index={true} path="/" element={<HomeScreen />} />
     </Route>
   )
 );
