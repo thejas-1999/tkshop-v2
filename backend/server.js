@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
+import mongoose from "mongoose";
 import products from "./data/products.js";
 
 const port = process.env.PORT || 5000;
@@ -20,6 +21,14 @@ app.get("/api/products/:id", (req, res) => {
   res.json(product);
 });
 
-app.listen(port, () => {
-  console.log(`server is running on http://localhost:${port}`);
-});
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log(`Database is connected`);
+    app.listen(port, () => {
+      console.log(`server is running on http://localhost:${port}`);
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
