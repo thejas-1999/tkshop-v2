@@ -1,12 +1,9 @@
 import express from "express";
-import dotenv from "dotenv";
-dotenv.config();
-import mongoose from "mongoose";
 import products from "./data/products.js";
-
-const port = process.env.PORT || 5000;
+import connectDB from "./config/connectDB.js";
 
 const app = express();
+const port = process.env.PORT || 8000;
 
 app.get("/", (req, res) => {
   res.send(`API is running...`);
@@ -21,14 +18,16 @@ app.get("/api/products/:id", (req, res) => {
   res.json(product);
 });
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
+const startServer = () => {
+  try {
+    connectDB();
     console.log(`Database is connected`);
+
     app.listen(port, () => {
       console.log(`server is running on http://localhost:${port}`);
     });
-  })
-  .catch((error) => {
+  } catch (error) {
     console.log(error);
-  });
+  }
+};
+startServer();
