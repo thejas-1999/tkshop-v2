@@ -1,6 +1,6 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { FaUser, FaShoppingCart } from "react-icons/fa";
-import { LinkContainer } from "react-router-bootstrap";
+
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 
@@ -23,15 +23,11 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link>
-                <Link to="/cart" className="custom-link">
-                  <FaShoppingCart /> Cart
-                </Link>
+              <Nav.Link as={Link} className="custom-link" to="/cart">
+                <FaShoppingCart /> Cart
               </Nav.Link>
-              <Nav.Link>
-                <Link to="/login" className="custom-link">
-                  <FaUser /> Sign In
-                </Link>
+              <Nav.Link as={Link} className="custom-link" to="/cart">
+                <FaUser /> Sign In
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
