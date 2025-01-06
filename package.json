@@ -1,0 +1,15 @@
+{
+  "name": "tkshop-v2",
+  "version": "2.0.0",
+  "description": "E-commerce application build  with MERN",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "author": "Thejas.K",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
