@@ -6,10 +6,45 @@ const initialState = localStorage.getItem("cart")
       cartItems: [],
     };
 
+const addDecimals = (num) => {
+  return (Math.round(num * 100) / 100).toFixed(2);
+};
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
+  reducers: {
+    addTocart: (state, action) => {
+      const item = action.payload;
+
+      const existItem = state.cartItems.find((x) => x._id === item._id);
+
+      if (existItem) {
+        state.cartItems.map((x) => (x._id === existItem._id ? item : x));
+      } else {
+        state.cartItems = [...state.cartItems, item];
+      }
+      //itemPrice
+      state.itemsPrice = addDecimals(
+        state.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+      );
+      //shoppingPrice itemPrice > 500 ? 0 : 40
+      state.shippingPrice = addDecimals(state.itemsPrice > 500 ? 0 : 40);
+
+      // taxPrice 18% tax
+      state.taxPrice = addDecimals((state.itemsPrice / 100) * 18);
+
+      //totalPrice
+      state.totalPrice = addDecimals(
+        Number(state.itemsPrice) +
+          Number(state.shippingPrice) +
+          Number(state.taxPrice)
+      );
+      localStorage.getItem("cart", JSON.stringify(state));
+    },
+  },
 });
+
+export const { addTocart } = cartSlice.actions;
 
 export default cartSlice.reducer;
