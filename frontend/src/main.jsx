@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -20,6 +19,7 @@ import LoginScreen from "./screens/LoginScreen.jsx";
 import RegisterScreen from "./screens/RegisterScreen.jsx";
 import ShippingScreen from "./screens/ShippingScreen.jsx";
 import PrivateRoute from "./screens/PrivateRoute.jsx";
+import PaymentScreen from "./screens/PaymentScreen.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +32,7 @@ const router = createBrowserRouter(
 
       <Route path="/" element={<PrivateRoute />}>
         <Route path="/shipping" element={<ShippingScreen />} />
+        <Route path="/payment" element={<PaymentScreen />} />
       </Route>
     </Route>
   )
