@@ -5,21 +5,59 @@ import Order from "../models/orderModel.js";
 //@route post /api/orders
 //@access private
 const addOrderItems = asyncHandler(async (req, res) => {
-  res.send("Create a new order");
+  const {
+    orderItems,
+    shippingAddress,
+    paymentMethod,
+    itemsPrice,
+    taxPrice,
+    totalPrice,
+  } = req.body;
+
+  if (orderItems && orderItems.length === 0) {
+    res.status(400);
+    throw new Error("No order Items");
+  } else {
+    const order = new Order({
+      orderItems: orderItems.map((x) => ({
+        ...x,
+        product: x._id,
+        _id: undefined,
+      })),
+      user: req.user._id,
+      shippingAddress,
+      paymentMethod,
+      itemsPrice,
+      taxPrice,
+      totalPrice,
+    });
+    const createdOrder = await order.save();
+    res.status(201).json(createdOrder);
+  }
 });
 
 //@desc get logged in users orders
 //@route get /api/orders/myorders
 //@access private
 const getMyOrder = asyncHandler(async (req, res) => {
-  res.send("get my orders");
+  const orders = await Order.findById({ user: req.user._id });
+  res.status(200).json(orders);
 });
 
 //@desc get order by id
 //@route get /api/orders/:id
 //@access private
 const getOrderById = asyncHandler(async (req, res) => {
-  res.send("get order by id");
+  const order = await Order.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
+  if (order) {
+    res.status(200).json(order);
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
 });
 
 //@desc create new orders
