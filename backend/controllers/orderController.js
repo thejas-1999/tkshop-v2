@@ -1,9 +1,9 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Order from "../models/orderModel.js";
 
-//@desc create new orders
-//@route post /api/orders
-//@access private
+//@desc Create new orders
+//@route POST /api/orders
+//@access Private
 const addOrderItems = asyncHandler(async (req, res) => {
   const {
     orderItems,
@@ -14,26 +14,27 @@ const addOrderItems = asyncHandler(async (req, res) => {
     totalPrice,
   } = req.body;
 
-  if (orderItems && orderItems.length === 0) {
+  if (!orderItems || !Array.isArray(orderItems) || orderItems.length === 0) {
     res.status(400);
-    throw new Error("No order Items");
-  } else {
-    const order = new Order({
-      orderItems: orderItems.map((x) => ({
-        ...x,
-        product: x._id,
-        _id: undefined,
-      })),
-      user: req.user._id,
-      shippingAddress,
-      paymentMethod,
-      itemsPrice,
-      taxPrice,
-      totalPrice,
-    });
-    const createdOrder = await order.save();
-    res.status(201).json(createdOrder);
+    throw new Error("No order items provided");
   }
+
+  const order = new Order({
+    orderItems: orderItems.map((x) => ({
+      ...x,
+      product: x._id,
+      _id: undefined,
+    })),
+    user: req.user._id,
+    shippingAddress,
+    paymentMethod,
+    itemsPrice,
+    taxPrice,
+    totalPrice,
+  });
+
+  const createdOrder = await order.save();
+  res.status(201).json(createdOrder);
 });
 
 //@desc get logged in users orders
