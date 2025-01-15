@@ -86,7 +86,7 @@ const PlaceOrderScreen = () => {
                           <Link to={`/product/${item._id}`}>{item.name}</Link>
                         </Col>
                         <Col md={4}>
-                          {item.price} x {item.qty} = {item.price * item.qty}₹
+                          {item.price} x {item.qty} = {item.price * item.qty}$
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -105,25 +105,25 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items Price:</Col>
-                  <Col>{cart.itemsPrice}₹</Col>
+                  <Col>{cart.itemsPrice}$</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax Price:</Col>
-                  <Col>{cart.taxPrice}₹</Col>
+                  <Col>{cart.taxPrice}$</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping Charge:</Col>
-                  <Col>{cart.shippingPrice}₹</Col>
+                  <Col>{cart.shippingPrice}$</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total Price:</Col>
-                  <Col>{cart.totalPrice}₹</Col>
+                  <Col>{cart.totalPrice}$</Col>
                 </Row>
               </ListGroup.Item>
 
