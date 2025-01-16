@@ -52,7 +52,42 @@ const Header = () => {
                   </Badge>
                 )}
               </Nav.Link>
-              {userInfo ? (
+              {!userInfo ? (
+                <Nav.Link as={Link} className="custom-link" to="/login">
+                  <FaUser /> Sign In
+                </Nav.Link>
+              ) : userInfo.isAdmin ? (
+                <NavDropdown title="Admin" id="adminmenu">
+                  <NavDropdown.Item
+                    as={Link}
+                    className="custom-link"
+                    to="/admin/productlist"
+                  >
+                    Products
+                  </NavDropdown.Item>
+                  <NavDropdown.Item
+                    as={Link}
+                    className="custom-link"
+                    to="/admin/userlist"
+                  >
+                    Users
+                  </NavDropdown.Item>
+                  <NavDropdown.Item
+                    as={Link}
+                    className="custom-link"
+                    to="/admin/orderlist"
+                  >
+                    Orders
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/profile">
+                    Profile
+                  </NavDropdown.Item>
+
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
                 <NavDropdown title={userInfo.name} id="username">
                   <NavDropdown.Item as={Link} to="/profile">
                     Profile
@@ -61,10 +96,6 @@ const Header = () => {
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
-              ) : (
-                <Nav.Link as={Link} className="custom-link" to="/login">
-                  <FaUser /> Sign In
-                </Nav.Link>
               )}
             </Nav>
           </Navbar.Collapse>
