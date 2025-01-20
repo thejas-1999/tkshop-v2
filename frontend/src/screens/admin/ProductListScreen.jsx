@@ -72,7 +72,7 @@ const ProductListScreen = () => {
                       as={Link}
                       className="btn-sm"
                       variant="light"
-                      to={`/admin/product/${product._id}`}
+                      to={`/admin/product/${product._id}/edit`}
                     >
                       <FaEdit />
                     </Button>
