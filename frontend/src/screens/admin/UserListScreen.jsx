@@ -4,14 +4,30 @@ import { FaEdit, FaTrash, FaTimes, FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
-import { useGetUsersQuery } from "../../slices/usersApiSlice";
+import {
+  useDeleteUserMutation,
+  useGetUsersQuery,
+} from "../../slices/usersApiSlice";
 
 const UserListScreen = () => {
   const { data: users, isLoading, error, refetch } = useGetUsersQuery();
+  const [deletUSer, { isLoading: loadingDelete }] = useDeleteUserMutation();
 
-  /*  const deleteHandler = () => {
-    console.log("Delete");
-  }; */
+  const deleteHandler = async (id, userRole) => {
+    if (userRole) {
+      toast.error("You cannot delete an admin user.");
+      return;
+    }
+    if (window.confirm("Are you sure you want to delete ?")) {
+      try {
+        await deletUSer(id);
+        refetch();
+        toast.success("Deleted Successfully");
+      } catch (error) {
+        toast.error(error?.data?.message || error.error);
+      }
+    }
+  };
 
   return (
     <>
@@ -20,7 +36,7 @@ const UserListScreen = () => {
           <h1>Users</h1>
         </Col>
       </Row>
-
+      {loadingDelete && <Loader />}
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -67,7 +83,7 @@ const UserListScreen = () => {
                     <Button
                       variant="danger"
                       className="btn-sm "
-                      onClick={() => deleteHandler(user._id)}
+                      onClick={() => deleteHandler(user._id, user.isAdmin)}
                     >
                       <FaTrash style={{ color: "white" }} />
                     </Button>
