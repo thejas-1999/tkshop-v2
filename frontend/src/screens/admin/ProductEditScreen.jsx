@@ -27,7 +27,7 @@ const ProductEditScreen = () => {
   const {
     data: product,
     isLoading,
-
+    refetch,
     error,
   } = useGetProductDetailsQuery(productId);
 
@@ -78,7 +78,6 @@ const ProductEditScreen = () => {
       toast.success(res.message);
 
       setImage(res.image);
-      console.log(res.image);
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

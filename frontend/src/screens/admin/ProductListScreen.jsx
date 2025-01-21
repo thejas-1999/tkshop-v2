@@ -7,6 +7,7 @@ import Loader from "../../components/Loader";
 import {
   useGetProductsQuery,
   useCreateProductMutation,
+  useDeleteProductMutation,
 } from "../../slices/productsApiSlice";
 
 const ProductListScreen = () => {
@@ -14,6 +15,9 @@ const ProductListScreen = () => {
 
   const [createProduct, { isLoading: loadingCreate }] =
     useCreateProductMutation();
+
+  const [deleteProduct, { isLoading: loadingDelete }] =
+    useDeleteProductMutation();
 
   const createProductHandler = async () => {
     if (window.confirm("Are yu sure you want to create a new product?"))
@@ -25,8 +29,16 @@ const ProductListScreen = () => {
       }
   };
 
-  const deleteHandler = (id) => {
-    console.log("delete product", id);
+  const deleteHandler = async (id) => {
+    if (window.confirm("Are you sure you want to delete?")) {
+      try {
+        await deleteProduct(id);
+        refetch();
+        toast.success("Product Deleted");
+      } catch (error) {
+        toast.error(error?.data?.message || error.error);
+      }
+    }
   };
 
   return (
@@ -42,6 +54,7 @@ const ProductListScreen = () => {
         </Col>
       </Row>
       {loadingCreate && <Loader />}
+      {loadingDelete && <Loader />}
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -70,15 +83,16 @@ const ProductListScreen = () => {
                   <td>
                     <Button
                       as={Link}
-                      className="btn-sm"
+                      className="btn-sm me-4"
                       variant="light"
                       to={`/admin/product/${product._id}/edit`}
                     >
                       <FaEdit />
                     </Button>
+
                     <Button
                       variant="danger"
-                      className="btn-sm"
+                      className="btn-sm "
                       onClick={() => deleteHandler(product._id)}
                     >
                       <FaTrash style={{ color: "white" }} />
