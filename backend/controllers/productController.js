@@ -51,12 +51,12 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   if (product) {
     product.name = name;
-    (product.price = price),
-      (product.image = image),
-      (product.brand = brand),
-      (product.category = category),
-      (product.countInStock = countInStock),
-      (product.description = description);
+    product.price = price;
+    product.image = image;
+    product.brand = brand;
+    product.category = category;
+    product.countInStock = countInStock;
+    product.description = description;
 
     const updateProduct = await product.save();
     res.json(updateProduct);

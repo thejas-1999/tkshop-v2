@@ -8,11 +8,12 @@ import FormContainer from "../../components/FormContainer";
 import {
   useUpdateProductMutation,
   useGetProductDetailsQuery,
+  useUploadProductImageMutation,
 } from "../../slices/productsApiSlice";
 
 const ProductEditScreen = () => {
   const { id: productId } = useParams();
-  console.log(productId);
+
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -26,12 +27,36 @@ const ProductEditScreen = () => {
   const {
     data: product,
     isLoading,
-    refetch,
+
     error,
   } = useGetProductDetailsQuery(productId);
 
   const [updateProduct, { isLoading: loadingUpdate }] =
     useUpdateProductMutation();
+
+  const [uploadProductImage, { isLoading: loadingUpload }] =
+    useUploadProductImageMutation();
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await updateProduct({
+        productId,
+        name,
+        price,
+        image,
+        brand,
+        category,
+        description,
+        countInStock,
+      }).unwrap(); // NOTE: here we need to unwrap the Promise to catch any rejection in our catch block
+      toast.success("Product updated");
+      refetch();
+      navigate("/admin/productlist");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
 
   useEffect(() => {
     if (product) {
@@ -45,26 +70,17 @@ const ProductEditScreen = () => {
     }
   }, [product]);
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    const updatedProduct = {
-      productId,
-      name,
-      price,
-      image,
-      brand,
-      category,
-      countInStock,
-      description,
-    };
+  const uploadFileHandler = async (e) => {
+    const formData = new FormData();
+    formData.append("image", e.target.files[0]);
+    try {
+      const res = await uploadProductImage(formData).unwrap();
+      toast.success(res.message);
 
-    const result = await updateProduct(updatedProduct);
-
-    if (result.error) {
-      toast.error(result.error);
-    } else {
-      toast.success("Product Updated successfully");
-      navigate("/admin/productlist");
+      setImage(res.image);
+      console.log(res.image);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
     }
   };
 
@@ -102,7 +118,21 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            {/* image */}
+            <Form.Group controlId="image">
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter image url"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              ></Form.Control>
+              <Form.Control
+                label="Choose File"
+                onChange={uploadFileHandler}
+                type="file"
+              ></Form.Control>
+              {loadingUpload && <Loader />}
+            </Form.Group>
 
             <Form.Group controlId="brand" className="my-2">
               <Form.Label>brand</Form.Label>

@@ -16,30 +16,33 @@ const storage = multer.diskStorage({
   },
 });
 
-const checkFileType = (file, cb) => {
-  const filetypes = /jpeg|jpg|png|gif/;
+function fileFilter(req, file, cb) {
+  const filetypes = /jpe?g|png|webp/;
+  const mimetypes = /image\/jpe?g|image\/png|image\/webp/;
 
-  const extname = filetypes.test(
-    require("path").extname(file.originalname).toLowerCase()
-  );
-
-  const mimetype = filetypes.test(file.mimetype);
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = mimetypes.test(file.mimetype);
 
   if (extname && mimetype) {
-    return cb(null, true);
+    cb(null, true);
   } else {
-    cb(new Error("Only image files are allowed!"));
+    cb(new Error("Images only!"), false);
   }
-};
+}
 
-const upload = multer({
-  storage,
-});
+const upload = multer({ storage, fileFilter });
+const uploadSingleImage = upload.single("image");
 
-router.post("/", upload.single("image"), (req, res) => {
-  res.send({
-    message: "Image Uploaded",
-    path: `/${req.file.path}`,
+router.post("/", (req, res) => {
+  uploadSingleImage(req, res, function (err) {
+    if (err) {
+      return res.status(400).send({ message: err.message });
+    }
+
+    res.status(200).send({
+      message: "Image uploaded successfully",
+      image: `/${req.file.path}`,
+    });
   });
 });
 
