@@ -1,13 +1,14 @@
 import { Pagination } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const Paginate = ({ pages, page, isAdmin = false }) => {
+const Paginate = ({ pages, page, isAdmin = false, keyword = "" }) => {
   const navigate = useNavigate();
-
   const handlePageChange = (pageNumber) => {
     const path = !isAdmin
-      ? `/page/${pageNumber}`
-      : `/admin/productlist/${pageNumber}`;
+      ? keyword
+        ? `/search/${keyword}/page/${pageNumber}` // If keyword is present, search path
+        : `/page/${pageNumber}` // If no keyword, page path
+      : `/admin/productlist/${pageNumber}`; // Admin path
     navigate(path);
   };
 
