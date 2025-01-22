@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 
 import "./assets/styles/index.css";
 import "./assets/styles/bootstrap.custom.css";
+import { HelmetProvider } from "react-helmet-async";
 
 import App from "./App.jsx";
 import HomeScreen from "./screens/HomeScreen.jsx";
@@ -73,9 +74,11 @@ const router = createBrowserRouter(
 );
 
 createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <PayPalScriptProvider deferLoading={true}>
-      <RouterProvider router={router} />
-    </PayPalScriptProvider>
-  </Provider>
+  <HelmetProvider>
+    <Provider store={store}>
+      <PayPalScriptProvider deferLoading={true}>
+        <RouterProvider router={router} />
+      </PayPalScriptProvider>
+    </Provider>
+  </HelmetProvider>
 );
