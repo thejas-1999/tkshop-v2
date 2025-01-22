@@ -15,7 +15,7 @@ import { HelmetProvider } from "react-helmet-async";
 import App from "./App.jsx";
 import HomeScreen from "./screens/HomeScreen.jsx";
 import ProductScreen from "./screens/ProductScreen.jsx";
-import CartScreen from "./screens/cartScreen.jsx";
+import CartScreen from "./screens/CartScreen.jsx";
 import store from "./store.js";
 import LoginScreen from "./screens/LoginScreen.jsx";
 import RegisterScreen from "./screens/RegisterScreen.jsx";
