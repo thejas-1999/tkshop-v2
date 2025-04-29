@@ -1,17 +1,17 @@
 {
   "name": "tkshop-v2",
   "version": "2.0.0",
-  "description": "E-commerce application built with MERN",
+  "description": "E-commerce application build  with MERN",
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
     "data:import": "node backend/seeder.js",
     "data:destroy": "node backend/seeder.js -d",
     "client": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
-    "build": "npm install --prefix frontend && npm run build --prefix frontend"
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Thejas.K",
   "license": "ISC",
@@ -28,8 +28,5 @@
     "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
     "nodemon": "^3.1.9"
-  },
-  "engines": {
-    "node": ">=18.0.0"
   }
 }
