@@ -96,16 +96,16 @@ const RegisterScreen = () => {
           className="mt-2"
           disabled={isLoading}
         >
-          Sign In
+          Sign Up
         </Button>
         {isLoading && <Loader />}
       </Form>
 
       <Row className="py-3">
         <Col>
-          New Customer?{" "}
-          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
-            Register Now
+          Already Have an Account?{" "}
+          <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
+            Login Now
           </Link>
         </Col>
       </Row>
